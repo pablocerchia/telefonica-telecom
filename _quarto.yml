@@ -1,0 +1,15 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Fusión Telecom y Telefónica"
+  navbar:
+    background: primary
+    search: true
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true 
