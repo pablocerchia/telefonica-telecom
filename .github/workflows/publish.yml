@@ -1,9 +1,9 @@
-on:
-  workflow_dispatch:
-  push:
-    branches: main
+name: Publish to GitHub Pages
 
-name: Quarto Publish
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-deploy:
@@ -18,10 +18,19 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: pre-release
+          
+      - name: Install Closeread Extension
+        run: |
+          quarto add --no-prompt qmd-lab/closeread
 
-      - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2
+      - name: Render Quarto Project
+        run: |
+          quarto render
+          touch docs/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          target: gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          branch: gh-pages
+          folder: docs
+          clean: true 
